@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">    
+    <title>Document</title>
+</head>
+<body>
+    <form name="cadastro">
+        <p2>Enviando dados ao BD (através do api construido):</p2><br/><br/>
+        <!-- Criamos um formulário -->
+        <!-- RA não precisa, pois é automático -->
+        Nome: <br/>
+        <input type="text" name="txtNome">
+        <br/>
+        e-mail: <br/>
+        <input type="text" name="txtEmail">
+        <br/>
+        Telefone: <br/>
+        <input type="text" name="txtTelefone">
+        <br/><br/>
+        <input type="button" name="btSalvar" value="Salvar" onclick="salvar(event, this)">
+        <br/>        
+    </form>
+    <!-- Iniciamos programação JavaScript -->
+    <script type="text/javascript">
+        //Criamo uma função para eniviar os dados digitados ao BD (xampp-MySQL)
+        function salvar(event, form){
+            //Este comando é para prevenir o cancelamento de evanto
+            event.preventDefault();
+            //variáveis para obter os dados digitados
+            const nome = document.cadastro.txtNome.value;
+            const email = document.cadastro.txtEmail.value;
+            const telefone = document.cadastro.txtTelefone.value;    
+            //uma lista para armazenar conjunto de dados obtidos
+            const dados = { 
+                nome: nome,  
+                email: email, 
+                telefone: telefone, 
+            };
+            //uma lista para dados de configuração
+            const options = {
+                method: 'POST', //método 'post': para enviar os dados
+                headers: {
+                'Content-Type': 'application/json',            
+                },
+                //De formato JSON para formato texto normal
+                body: JSON.stringify(dados),
+            };
+            if (nome != "" ) {            
+                //alert( nome + "\n" + email + "\n" + telefone);
+                    //Endereço do api que construimos para cadastar os dados no BD
+                    const URL = 'http://localhost/Api_Exemplos_BD/api/Alunos';
+                    fetch(URL , options)                        
+                        /*Uma Arrow function é exatamente como uma função/callback normal */                                       
+                        .then(data => console.log(data))
+                        //Além disso podemos utilizar o método catch() para tratar erros.
+                        //e a mensagem de erros estará console
+                        .catch(erro => console.log(erro));            
+            }
+        }
+        //Uma função para mostar uma mensagem de alerta "Dados incluidos com sucesso"
+        function mostrarResposta(data){
+            alert("Dados incluídos com sucesso");
+            // tipo de dados internos 
+            console.log(data) ;            
+        }
+    </script>
+</body>
+</html>
